@@ -1,4 +1,4 @@
-const { askQuestion } = require("./middleware/askQuestion");
+const { askQuestion } = require("./askQuestions");
 
 const phoneNumber = process.env.PHONE_TEST_NUMBER;
 

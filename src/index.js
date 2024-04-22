@@ -3,6 +3,7 @@ const { StoreSession } = require("telegram/sessions");
 const { NewMessage } = require("telegram/events");
 
 const { forwardMessage } = require("./middleware/forwardMessage");
+const { authUser } = require("./middleware/authUser");
 
 require("dotenv").config();
 
@@ -20,7 +21,7 @@ const client = new TelegramClient(session, apiId, apiHash, {
 
 const start = async () => {
   try {
-    authUser(client);
+    await authUser(client);
 
     console.log(
       `Tracking messages in chat ${sourceChatId} and forwarding them to ${targetChatId}`

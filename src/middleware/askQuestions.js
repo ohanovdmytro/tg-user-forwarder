@@ -1,6 +1,6 @@
 const readline = require("readline");
 
-async function askQuestion(question) {
+async function askQuestions(question) {
   const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout,
@@ -14,5 +14,5 @@ async function askQuestion(question) {
 }
 
 module.exports = {
-  askQuestion,
+  askQuestions,
 };

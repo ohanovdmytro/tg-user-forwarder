@@ -1,4 +1,8 @@
 const { Api } = require("telegram");
+require("dotenv").config();
+
+const sourceChatId = process.env.SOURCE_TEST_ID;
+const targetChatId = process.env.TARGET_TEST_ID;
 
 async function forwardMessage(handleEvent) {
   const { event, client } = handleEvent;
@@ -12,13 +16,14 @@ async function forwardMessage(handleEvent) {
         `Selfsent message ignored from ${event.message.fromId?.userId.value.toString()}`
       );
     } else if (chatId === sourceChatId) {
-      await client.invoke(
+      const result = await client.invoke(
         new Api.messages.ForwardMessages({
           fromPeer: parseInt(sourceChatId),
           toPeer: parseInt(targetChatId),
           id: [parseInt(messageId)],
         })
       );
+      console.log(`${new Date()} -- Message forwarded to StudenHelp_bot`);
     }
   } catch (e) {
     console.error("Error when forwarding message: ", e.message);
