@@ -6,12 +6,12 @@ const { askQuestions } = require("./helpers/askQuestions");
 
 require("dotenv").config();
 
-const apiHash = process.env.API_TEST_HASH;
-const apiId = Number(process.env.API_TEST_ID);
-const phoneNumber = process.env.PHONE_TEST_NUMBER;
+const apiHash = process.env.API_HASH;
+const apiId = Number(process.env.API_ID);
+const phoneNumber = process.env.PHONE_NUMBER;
 
-const sourceChatId = process.env.SOURCE_TEST_ID;
-const targetChatId = process.env.TARGET_TEST_ID;
+const sourceChatId = process.env.SOURCE_ID;
+const targetChatId = process.env.TARGET_ID;
 
 const session = new StoreSession("session1");
 
@@ -28,6 +28,8 @@ const start = async () => {
         await askQuestions("Please enter the code you received: "),
       onError: (err) => console.log(err),
     });
+
+    await client.getDialogs();
 
     console.log(
       `Tracking messages in chat ${sourceChatId} and forwarding them to ${targetChatId}`
@@ -47,11 +49,7 @@ async function forwardMessage(event) {
     const messageId = event.message.id;
     const chatId = event.message.peerId.userId?.value.toString();
 
-    if (typeof event.message.fromId?.userId?.value === "bigint") {
-      console.log(
-        `Selfsent message ignored from ${event.message.fromId?.userId.value.toString()}`
-      );
-    } else if (chatId === sourceChatId) {
+    if (chatId === sourceChatId) {
       await client.invoke(
         new Api.messages.ForwardMessages({
           fromPeer: parseInt(sourceChatId),
